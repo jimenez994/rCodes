@@ -57,7 +57,7 @@ public class HomeController {
 		return "home";
 	}
 	@PostMapping("/post")
-	public String createPost(@Valid @ModelAttribute("newPost") Post post,@RequestParam("file") MultipartFile file,HttpSession session) {
+	public String createPost(@Valid @ModelAttribute("newPost") Post post,@RequestParam("file") MultipartFile file,HttpSession session){
 		User cUser = userServices.findById((long)session.getAttribute("id"));
 		
 		if(file.isEmpty() && post.getMessage().equals("")) {

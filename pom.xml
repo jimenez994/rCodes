@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.zeus</groupId>
-	<artifactId>r-code</artifactId>
+	<artifactId>rcodes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>r-code</name>
+	<name>rcodes</name>
 	<description>login and registration</description>
 
 	<parent>
