@@ -2,6 +2,7 @@ package com.zeus.rcode.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,17 @@ public class CommentServices {
 		return list;
 	}
 	public Comment getComment(Long id) {
-		return commentRepository.findOne(id);
+		Optional<Comment> comment = commentRepository.findById(id);
+		if(comment.isPresent()) {			
+			return comment.get();
+		}
+		return null;
 	}
 	public void addComment(Comment comment) {
 		commentRepository.save(comment);
 	}
 	public void deleteComment(Long id) {
-		commentRepository.delete(id);
+		commentRepository.deleteById(id);
 	}
 
 }

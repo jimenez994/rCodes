@@ -1,5 +1,7 @@
 package com.zeus.rcode.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,11 @@ public class UserInfoServices {
 	private UserInfoRepository userInfoRepo;
 	
 	public UserInfo getUserInfo(Long id) {
-		return userInfoRepo.findOne(id);
+		Optional<UserInfo> userInfo = userInfoRepo.findById(id);
+		if(userInfo.isPresent()) {
+			return userInfo.get();
+		}
+		return null;
 	}
 	
 	public void addUserInfo(UserInfo userInfo) {
@@ -21,7 +27,7 @@ public class UserInfoServices {
 	}
 	
 	public void deleteUserInfo(Long id) {
-		userInfoRepo.delete(id);
+		userInfoRepo.deleteById(id);
 	}
 
 }

@@ -1,6 +1,8 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page isELIgnored="false" %><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -14,9 +16,9 @@
         <link rel="stylesheet" href="/src/css/fontawesome-all.min.css">
         <link rel="stylesheet" href="/src/css/bootstrap.css">
         <link rel="stylesheet" href="/src/css/style.css">
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>R-Code</title>
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
 		<script src="/js/main.js"></script>
 	</head>
 
@@ -105,7 +107,7 @@
                     <input class="form-control" placeholder="email/username" type="text" name="email">
                   </div>
                   <div class="form-group">
-                    <input class="form-control" type="password" name="password">
+                    <input class="form-control" placeholder="password" type="password" name="password">
                   </div>
                   <div class="card-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">Close</button>

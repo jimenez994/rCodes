@@ -3,6 +3,7 @@ package com.zeus.rcode.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,13 +29,17 @@ public class PostServices {
 		return list;
 	}
 	public Post getPost(Long id) {
-		return postRepository.findOne(id);
+		Optional<Post> post = postRepository.findById(id);
+		if(post.isPresent()) {
+			return post.get();
+		}
+		return null;
 	}
 	public void addPost(Post post) {
 		postRepository.save(post);
 	}
 	public void deletePost(Long id) {
-		postRepository.delete(id);
+		postRepository.deleteById(id);
 	}
 	public ArrayList<Post> getAllFriendsPost(Long id){
 		return postRepository.findAllFriendsPost(id,id);

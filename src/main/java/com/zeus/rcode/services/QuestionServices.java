@@ -2,6 +2,7 @@ package com.zeus.rcode.services;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -28,13 +29,17 @@ public class QuestionServices {
 		
 	}
 	public Question getQuestion(Long id) {
-		return questionRepo.findOne(id);
+		Optional<Question> question = questionRepo.findById(id);
+		if(question.isPresent()) {
+			return question.get();
+		}
+		return null;
 	}
 	public void  addQuestion(Question question) {
 		questionRepo.save(question);
 	}
 	
 	public void deleteQuestion(Long id) {
-		questionRepo.delete(id);
+		questionRepo.deleteById(id);
 	}
 }

@@ -6,19 +6,13 @@ import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zeus.rcode.models.Answer;
@@ -27,6 +21,9 @@ import com.zeus.rcode.models.User;
 import com.zeus.rcode.services.AnswerServices;
 import com.zeus.rcode.services.QuestionServices;
 import com.zeus.rcode.services.UserServices;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/question")
@@ -43,7 +40,7 @@ public class QuestionController {
 	@Autowired
 	private AnswerServices answerServices;
 	
-	@RequestMapping("/{id}")
+	@GetMapping("/{id}")
 	public String showQuestion(Model model,HttpSession session,@PathVariable("id") Long id,@ModelAttribute("newAnswer") Answer answer) {
 		Question question = questionServices.getQuestion(id);
 		List<Answer> answerList = question.getAnswers();

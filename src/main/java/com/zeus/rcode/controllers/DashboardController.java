@@ -5,19 +5,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zeus.rcode.models.Image;
@@ -27,18 +20,22 @@ import com.zeus.rcode.services.ImageServices;
 import com.zeus.rcode.services.QuestionServices;
 import com.zeus.rcode.services.UserServices;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
 @Controller
 public class DashboardController {
-	@Autowired
-	private QuestionServices questionServices;
 	
 	@Autowired
 	private UserServices userServices;
 	
 	@Autowired
-	private ImageServices imageServices; 
+	private ImageServices imageServices;
 	
-	@RequestMapping("/dashboard")
+	@Autowired
+	private QuestionServices questionServices;
+	
+	@GetMapping("/dashboard")
 	public String dashboard(HttpSession session,Model model,@ModelAttribute("request")User request,@ModelAttribute("newQuestion") Question question){
 		List<Question> questions = questionServices.getAll();
 		List<Image> images = imageServices.getAll();

@@ -1,6 +1,7 @@
 package com.zeus.rcode.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,13 @@ public class ImageServices {
 	public List<Image> getAll(){
 		return imageRepository.findAll();
 	}
-	public Image getImage(Long id) {
-		return imageRepository.findOne(id);
+	public Optional<Image> getImage(Long id) {
+		return imageRepository.findById(id);
 	}
 	public void addImage(Image image) {
 		imageRepository.save(image);
 	}
 	public void deleteImage(Long id) {
-		imageRepository.delete(id);
+		imageRepository.deleteById(id);
 	}
 }

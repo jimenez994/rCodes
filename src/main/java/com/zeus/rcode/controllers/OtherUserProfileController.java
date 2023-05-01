@@ -2,7 +2,6 @@ package com.zeus.rcode.controllers;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.zeus.rcode.models.Question;
 import com.zeus.rcode.models.User;
 import com.zeus.rcode.services.UserServices;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/profile")

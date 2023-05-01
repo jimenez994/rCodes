@@ -1,6 +1,7 @@
 package com.zeus.rcode.services;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -20,14 +21,20 @@ public class AnswerServices {
 	}
 	
 	public Answer findAnswer(Long id) {
-		return answerRepository.findOne(id);
+		
+		Optional<Answer> answer = answerRepository.findById(id);
+		if(answer.isPresent()) {
+			return answer.get();
+		}
+		
+		return null;
 	}
 	
 	public void addAnswer(Answer answer) {
 		answerRepository.save(answer);
 	}
 	public void deleteAnswer(Long id) {
-		answerRepository.delete(id);
+		answerRepository.deleteById(id);
 	}
 
 }

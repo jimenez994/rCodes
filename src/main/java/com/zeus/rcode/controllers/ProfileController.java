@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,9 @@ import com.zeus.rcode.models.UserInfo;
 import com.zeus.rcode.services.QuestionServices;
 import com.zeus.rcode.services.UserInfoServices;
 import com.zeus.rcode.services.UserServices;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/user")

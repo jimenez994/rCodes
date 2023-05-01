@@ -1,7 +1,5 @@
 package com.zeus.rcode.controllers;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.zeus.rcode.models.User;
 import com.zeus.rcode.services.QuestionServices;
 import com.zeus.rcode.services.UserServices;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 public class LoginRController {
@@ -29,7 +30,10 @@ public class LoginRController {
 	
 	@PostMapping("/login")
 	public String login(@RequestParam("email") String email, @RequestParam("password") String password,HttpSession session){
+		System.out.println("got ---1 ");
+
 		User user = us.findByEmail(email);
+		System.out.println("got --2");
 		if(user == null) {
 			 user = us.findByUsername(email);
 		}
@@ -37,6 +41,8 @@ public class LoginRController {
 			return "redirect:/";
 		}else{
 			if( us.isMatch( password ,user.getPassword() ) ){
+				System.out.println("got login");
+
 				session.setAttribute("id",user.getId());
 				return "redirect:/dashboard";
 			}else{
@@ -59,6 +65,7 @@ public class LoginRController {
 
 	@PostMapping("/register")
 	public String create(@Valid @ModelAttribute("user") User user,BindingResult result,HttpSession session){
+		System.out.println("trying to register");
 		if(result.hasErrors()){
 			return "registerW";
 		}else{
@@ -75,5 +82,13 @@ public class LoginRController {
 				return "redirect:/register";
 			}
 		}
+	}
+
+	public QuestionServices getQuestionServices() {
+		return questionServices;
+	}
+
+	public void setQuestionServices(QuestionServices questionServices) {
+		this.questionServices = questionServices;
 	}
 }

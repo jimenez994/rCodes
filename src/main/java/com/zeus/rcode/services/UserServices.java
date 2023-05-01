@@ -2,14 +2,13 @@ package com.zeus.rcode.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.zeus.rcode.models.User;
 import com.zeus.rcode.repositories.UserRepository;
-
-import antlr.collections.List;
 
 @Service
 public class UserServices {
@@ -50,7 +49,11 @@ public class UserServices {
 	}
 
 	public User findById(long id){
-		return (User) userRepository.findOne(id);
+		Optional<User> user = userRepository.findById(id);
+		if(user.isPresent()) {
+			return user.get();
+		}
+		return null;
 	}
 
 	public void destroy(User user){
