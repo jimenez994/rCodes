@@ -3,6 +3,7 @@ package com.zeus.rcode.models;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,6 +25,8 @@ public class Post {
 	
 	private String picture;
 	
+	private String imageId;	
+	
 	@Column(length=5000)
 	private String message;
 	
@@ -39,7 +42,7 @@ public class Post {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	@OneToMany(mappedBy="post", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<Comment> comments;
 	
 	@PrePersist
@@ -98,6 +101,12 @@ public class Post {
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	public String getImageId() {
+		return imageId;
+	}
+	public void setImageId(String imageId) {
+		this.imageId = imageId;
 	}
 	
 	

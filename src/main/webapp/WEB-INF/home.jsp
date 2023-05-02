@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -7,6 +6,7 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 
 <head>
@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/src/css/bootstrap.css">
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Index</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -60,9 +61,8 @@
                 <div class="card">
                     <div class="card-body" id="headingS1">
                         <h5 class="mb-0">
-                            <div href="#collapse1" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
-                                class="">
-                                <i class="fa fa-pencil-square-o"></i> Share an image or idea
+                            <div href="#collapse1" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" class="">
+                                <i class="fa fa-pencil-square-o"></i> <span>Share an image or idea</span>
                             </div>
                         </h5>
                     </div>
@@ -71,12 +71,9 @@
                         <div id="collapse1" class="collapse">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <form:textarea path="message" class="form-control" rows="4"
-                                        placeholder="Write something here"></form:textarea>
+                                    <form:textarea path="message" class="form-control" rows="4" placeholder="Write something here"></form:textarea>
                                 </div>
-
                             </div>
-
                         </div>
                         <div class="card">
                             <img class="card-img" id="preview">
@@ -87,39 +84,27 @@
                             </div>
                             <div class="d-flex row-hl ">
                                 <div>
-                                    <label for="files" class="btn item-hl ml-3 mb-3 btn-info"> <i
-                                            class="fa fa-camera"></i> Image </label>
-
+                                    <label for="files" class="btn item-hl ml-3 mb-3 btn-info"> <i class="fa fa-camera"></i> Image </label>
                                 </div>
-                                <input type="submit" class="btn ml-auto mr-3 mb-3 item-hl btn-secondary "
-                                    value="Post" />
+                                <input type="submit" class="btn ml-auto mr-3 mb-3 item-hl btn-secondary " value="Post" />
                             </div>
                         </div>
                     </form:form>
                 </div>
                 <c:forEach items="${posts}" var="post">
-                    <div class="card mb-2 text-top">
+                    <div class="card mb-2 text-top" data-id="${ post.getId() }">
                         <div class="d-flex row-hl">
-                            <img id="smallUserImgHome" src="/images/${post.getUser().getUserInfo().getProfileImg()}"
-                                alt="${cUser.getUserInfo().getProfileImg()}"
-                                class="img-fluid item-hl mt-1 rounded-circle mt-2 ml-2">
+                            <img id="smallUserImgHome" src="/images/${post.getUser().getUserInfo().getProfileImg()}" alt="${cUser.getUserInfo().getProfileImg()}" class="img-fluid item-hl mt-1 rounded-circle mt-2 ml-2"/>
                             <div class="item-hl ml-2 mt-1">
                                 <c:if test="${post.getUser().getId() == cUser.id}">
-                                    <p id="postSmallText"><a class="text-dark" href="/user/${post.getUser().getId()}">
-                                            ${post.getUser().getUserInfo().getFirstName()} </a> </p>
-                                    <p id="postSmallname"> <small> <a class="text-secondary"
-                                                href="/user/${post.getUser().getId()}">
-                                                ${post.getUser().getUserInfo().getHeadline()}</a> </small> </p>
+                                    <p id="postSmallText"><a class="text-dark" href="/user/${post.getUser().getId()}"> ${post.getUser().getUserInfo().getFirstName()} </a> </p>
+                                    <p id="postSmallname"> <small> <a class="text-secondary" href="/user/${post.getUser().getId()}">${post.getUser().getUserInfo().getHeadline()}</a> </small> </p>
+                                    <button class="deleteButtonPost" data-id="${post.getId() }">Delete here</button>
                                 </c:if>
                                 <c:if test="${post.getUser().getId() != cUser.id}">
-                                    <p id="postSmallText"><a class="text-dark"
-                                            href="/profile/${post.getUser().getId()}">
-                                            ${post.getUser().getUserInfo().getFirstName()} </a> </p>
-                                    <p id="postSmallname"> <small> <a class="text-secondary"
-                                                href="/profile/${post.getUser().getId()}">
-                                                ${post.getUser().getUserInfo().getHeadline()}</a> </small> </p>
+                                    <p id="postSmallText"><a class="text-dark" href="/profile/${post.getUser().getId()}"> ${post.getUser().getUserInfo().getFirstName()} </a> </p>
+                                    <p id="postSmallname"> <small> <a class="text-secondary" href="/profile/${post.getUser().getId()}"> ${post.getUser().getUserInfo().getHeadline()}</a> </small> </p>
                                 </c:if>
-
 
                                 <p> <small class="text-secondary">${pTime.format(post.getCreatedAt())} </small> </p>
                             </div>
@@ -127,8 +112,7 @@
                         </div>
                         <p class="card-text mr-3 ml-3 mb-3">${post.getMessage()}</p>
                         <c:if test="${post.getPicture() != null}">
-                            <img class="card-img-bottom card-img-top img-fluid" src="${post.getPicture()}"
-                                alt="${post.getPicture()}">
+                            <img class="card-img-bottom card-img-top img-fluid" src="${post.getPicture()}" alt="${post.getPicture()}">
                         </c:if>
                         <small class="text-muted ml-2"> 5 Like * <a href="#collapseComments${post.getId()}"
                                 data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
@@ -169,30 +153,18 @@
                         <div id="collapseCommentForm${post.getId()}" class="collapse">
                             <!-- comment form -->
                             <div class=" mr-2 ml-2">
-                                <form:form action="/home/addComment/${post.getId()}" method="post"
-                                    enctype="multipart/form-data" modelAttribute="newComment">
-
+                                <form:form action="/home/addComment/${post.getId()}" method="post" enctype="multipart/form-data" modelAttribute="newComment">
                                     <div class="card">
-
                                         <img class="card-img" id="prev">
                                     </div>
-                                    <form:input path="comment" type="text" id="name"
-                                        class="form-control form-control-sm" placeholder="Add a comment...">
-                                    </form:input>
-
+                                    <form:input path="comment" type="text" id="name" class="form-control form-control-sm" placeholder="Add a comment..."></form:input>
                                     <div class="d-flex flex-row justify-content-between row-hl mt-2 ">
-
-                                        <label for="fil" class="btn text-info"> <i class="fa fa-camera"></i> </label>
-                                        <input id="fil" style="visibility:hidden;" name="commentImage" type="file">
-                                        <small><input id="smallCommentBtn" class="text-rigth btn btn-info" type="submit"
-                                                value="Post"></small>
+                                        <!-- <label for="fil" class="btn text-info"> <i class="fa fa-camera"></i> </label> -->
+                                        <!-- <input id="fil" style="visibility:hidden;" name="commentImage" type="file"> -->
+                                        <small><input id="smallCommentBtn" class="text-rigth btn btn-info" type="submit" value="Post"/></small>
                                     </div>
-
-
                                 </form:form>
                             </div>
-
-
 
                         </div>
                     </div>

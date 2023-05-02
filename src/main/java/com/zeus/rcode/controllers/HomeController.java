@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-
+import java.util.Map;
 
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,7 +26,7 @@ import com.zeus.rcode.models.Comment;
 import com.zeus.rcode.models.Post;
 import com.zeus.rcode.models.User;
 import com.zeus.rcode.services.CommentServices;
-import com.zeus.rcode.services.FileUpload;
+import com.zeus.rcode.services.FileService;
 import com.zeus.rcode.services.PostServices;
 import com.zeus.rcode.services.UserServices;
 
@@ -38,7 +39,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/home")
 public class HomeController {
 	@Autowired
-	 private  FileUpload fileUpload;
+	 private  FileService fileService;
 	 
 	 @Autowired 
 	private UserServices userServices; 
@@ -64,22 +65,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	
-	
-	 @PostMapping("/upload")
-	    public String uploadFile(@RequestParam("image")MultipartFile multipartFile,Model model) throws IOException {
-		 System.out.println("got to upload ");
-		 String imageURL = fileUpload.uploadFile(multipartFile);
-		 System.out.println(imageURL);
-
-	        model.addAttribute("imageURL",imageURL);
-	        return "home";
-	    }
-	
-	
-	
-	
-	
 	@PostMapping("/post")
 	public String createPost(@Valid @ModelAttribute("newPost") Post post,@RequestParam("image") MultipartFile multipartFile,HttpSession session){
 		User cUser = userServices.findById((long)session.getAttribute("id"));
@@ -89,10 +74,12 @@ public class HomeController {
 		}else if(!multipartFile.isEmpty()) {
 			
 			try {
-				String imageURL = fileUpload.uploadFile(multipartFile);
+				Map<String, Object> imageResponse = fileService.uploadFile(multipartFile);
+			
 //				adding it to my datebase
 				post.setUser(cUser);
-				post.setPicture(imageURL);
+				post.setPicture(imageResponse.get("url").toString());
+				post.setImageId(imageResponse.get("public_id").toString());
 				cUser.getPosts().add(post);
 				postServices.addPost(post);
 				return "redirect:/home";
@@ -107,6 +94,29 @@ public class HomeController {
 		}
 		return "redirect:/home";
 	}
+	
+	@PostMapping("/delete/{postId}")
+	public ResponseEntity<String> deletePost(@PathVariable("postId") long postId,HttpSession session) {
+		System.out.println(postId);
+		Post post = postServices.getPost(postId);
+		Long currentUserId = (Long) session.getAttribute("id");
+		System.out.println(post.getPicture());
+		if(post.getUser().getId() == currentUserId) {
+			postServices.deletePost(postId);
+			try {
+				fileService.deleteFile(post.getImageId());
+		        return ResponseEntity.ok().body("Object deleted successfully");
+			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+				e.printStackTrace();
+		        return ResponseEntity.badRequest().body("Something went wrong");
+			}
+		}
+        return ResponseEntity.badRequest().body("Something went wrong");
+
+	}
+	
+	
 	@PostMapping("/addComment/{id}")
 	public String addComment(@Valid @ModelAttribute("newComment") Comment comment,@PathVariable("id") Long id,HttpSession session,@RequestParam("commentImage") MultipartFile multipartFile) {
 		User cUser = userServices.findById((long)session.getAttribute("id"));
@@ -116,7 +126,7 @@ public class HomeController {
 			return "redirect:/home";
 		}else if(!multipartFile.isEmpty()) {
 			try {
-				String imageURL = fileUpload.uploadFile(multipartFile);
+				String imageURL = fileService.uploadFile(multipartFile).get("url").toString();
 //				adding it to my datebase
 				comment.setUser(cUser);
 				comment.setPost(cPost);

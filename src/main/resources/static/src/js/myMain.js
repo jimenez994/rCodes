@@ -10,5 +10,21 @@ window.onload = function(){
         }
     });
 }
-
+  $(document).ready(function() {
+            $('.deleteButtonPost').click(function() {
+                var id = $(this).data('id');
+                $.ajax({
+                    type: 'POST',
+                    url: '/home/delete/' + id,
+                    success: function(response) {
+                       // alert('Object with ID ' + id + ' was deleted successfully!');
+                        // Remove the deleted object from the UI
+                        $('[data-id="' + id + '"]').closest('div').remove();
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred: ' + error);
+                    }
+                });
+            });
+        });
    
