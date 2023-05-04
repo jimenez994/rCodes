@@ -57,7 +57,7 @@
             <div class="col-lg-2 d-none d-lg-block">
                 some other stuff may go here
             </div>
-            <div class="col-sm-9 col-m-9 col-lg-7  ">
+            <div class="col-sm-9 col-m-9 col-lg-8  ">
                 <div class="card">
                     <div class="card-body" id="headingS1">
                         <h5 class="mb-0">
@@ -67,7 +67,7 @@
                         </h5>
                     </div>
 
-                    <form:form method="post" action="/home/post" enctype="multipart/form-data" modelAttribute="newPost">
+                    <form:form method="post" action="/home/post" id="postForm" enctype="multipart/form-data" modelAttribute="newPost">
                         <div id="collapse1" class="collapse">
                             <div class="card-body">
                                 <div class="form-group">
@@ -83,10 +83,12 @@
                                 <input id="files" style="visibility:hidden;" name="image" type="file">
                             </div>
                             <div class="d-flex row-hl ">
-                                <div>
+                                <div id="imageButton">
                                     <label for="files" class="btn item-hl ml-3 mb-3 btn-info"> <i class="fa fa-camera"></i> Image </label>
                                 </div>
-                                <input type="submit" class="btn ml-auto mr-3 mb-3 item-hl btn-secondary " value="Post" />
+                                <button type="submit" class="btn ml-auto mr-3 mb-3 item-hl btn-secondary " value="Post" id="submitPostButton" onclick="submitForm()"> Post</button>
+                                <span id="loadingIcon" class="ml-auto mr-3 mb-3 item-hl" style="display: none;"><i class="fa fa-spinner fa-spin"></i></span>
+                                
                             </div>
                         </div>
                     </form:form>
@@ -99,7 +101,7 @@
                                 <c:if test="${post.getUser().getId() == cUser.id}">
                                     <p id="postSmallText"><a class="text-dark" href="/user/${post.getUser().getId()}"> ${post.getUser().getUserInfo().getFirstName()} </a> </p>
                                     <p id="postSmallname"> <small> <a class="text-secondary" href="/user/${post.getUser().getId()}">${post.getUser().getUserInfo().getHeadline()}</a> </small> </p>
-                                    <button class="deleteButtonPost" data-id="${post.getId() }">Delete here</button>
+                                    <button class="deleteButtonPost" data-id="${post.getId() }">X</button>
                                 </c:if>
                                 <c:if test="${post.getUser().getId() != cUser.id}">
                                     <p id="postSmallText"><a class="text-dark" href="/profile/${post.getUser().getId()}"> ${post.getUser().getUserInfo().getFirstName()} </a> </p>
@@ -110,7 +112,10 @@
                             </div>
 
                         </div>
+                        <c:if test="${!post.getMessage().isEmpty()}">
                         <p class="card-text mr-3 ml-3 mb-3">${post.getMessage()}</p>
+                        </c:if>
+                        
                         <c:if test="${post.getPicture() != null}">
                             <img class="card-img-bottom card-img-top img-fluid" src="${post.getPicture()}" alt="${post.getPicture()}">
                         </c:if>
@@ -171,7 +176,7 @@
                 </c:forEach>
 
             </div>
-            <div class="col-sm-3 d-none d-sm-block">
+            <div class="col-lg-2 d-none d-sm-block">
                 <p>other stuff goes here</p>
             </div>
         </div>

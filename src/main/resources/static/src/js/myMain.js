@@ -17,14 +17,62 @@ window.onload = function(){
                     type: 'POST',
                     url: '/home/delete/' + id,
                     success: function(response) {
-                       // alert('Object with ID ' + id + ' was deleted successfully!');
-                        // Remove the deleted object from the UI
                         $('[data-id="' + id + '"]').closest('div').remove();
+                        console.log(response)
                     },
                     error: function(xhr, status, error) {
-                        alert('An error occurred: ' + error);
+                        console.log('An error occurred: ' + error);
                     }
                 });
             });
         });
+        
+document.getElementById("postForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // prevent default form submission behavior
+  submitForm();
+});
+
+
+  function submitForm() {
+    var form = document.getElementById("postForm");
+    var formData = new FormData(form);
+    var xhttp = new XMLHttpRequest();
+    var submitButton = document.getElementById("submitPostButton");
+    var loadingIcon = document.getElementById("loadingIcon");
+    var imagebButton = document.getElementById("imageButton");
+
+    // Hide the submit button and show the loading icon
+    submitButton.style.visibility = "hidden";
+    loadingIcon.style.display = "inline-block";
+    imagebButton.style.visibility = "hidden";
+
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4) {
+        // Show the submit button and hide the loading icon
+        submitButton.style.visibility = "visible";
+        loadingIcon.style.display = "none";
+            imagebButton.style.visibility = "visible";
+
+        if (this.status == 200) {
+          form.reset();
+          document.getElementById("files").value = "";
+          document.getElementById("preview").src = ""; // Clear image preview
+          console.log(this.responseText);
+          // handle success response
+        } else {
+          console.log(this.status + " " + this.statusText);
+          // handle error response
+        }
+      }
+    };
+    xhttp.open("POST", "/home/post", true);
+    xhttp.send(formData);
+  }
+
+
+
+
+
+
+
    
